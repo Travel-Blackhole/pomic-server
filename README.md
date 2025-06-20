@@ -1,2 +1,5 @@
-# pomic-server
-the backend server for pomic website
+# Pomic-Server
+the backend server for Pomic website.
+
+# Installation
+
