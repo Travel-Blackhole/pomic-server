@@ -30,5 +30,5 @@ public class User {
     private String nickname;
 
     @Column(nullable = false)
-    private LocalDateTime createdBy;
+    private LocalDateTime createBy;
 }
