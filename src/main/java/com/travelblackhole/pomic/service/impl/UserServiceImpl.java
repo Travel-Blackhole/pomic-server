@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -19,6 +22,7 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Override
     public Optional<UserDto> register(User user) {
 
@@ -26,16 +30,19 @@ public class UserServiceImpl implements UserService {
         user.setCreatedBy(LocalDateTime.now());
         user.setUpdatedBy(LocalDateTime.now());
 
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
         User savedUser = userRepository.save(user);
         return Optional.of(toDto(savedUser));
     }
 
     @Override
-    public Optional<UserDto> login(String username, String password) {
+    public Optional<UserDto> login(String username, String rawPassword) {
         return userRepository.findByUsername(username)
-                .filter(user -> user.getPassword() != null && user.getPassword().equals(password))
+                .filter(user -> passwordEncoder.matches(rawPassword, user.getPassword()))
                 .map(this::toDto);
     }
+
 
     @Override
     public Optional<UserDto> getUserById(Long id) {
