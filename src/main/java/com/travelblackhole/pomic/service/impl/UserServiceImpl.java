@@ -17,18 +17,19 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Override
     public Optional<UserDto> register(User user) {
-
         user.setStatus(UserStatus.ACTIVE);
         user.setCreatedBy(LocalDateTime.now());
         user.setUpdatedBy(LocalDateTime.now());
+
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
