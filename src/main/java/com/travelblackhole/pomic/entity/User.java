@@ -30,5 +30,14 @@ public class User {
     private String nickname;
 
     @Column(nullable = false)
-    private LocalDateTime createBy;
+    private LocalDateTime createdBy;
+
+    @Column(nullable = false)
+    private LocalDateTime updatedBy;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserStatus status;
+
+
 }
